@@ -1,0 +1,36 @@
+def count_differences(doc1_path, doc2_path):
+    # Membaca isi file
+    with open(doc1_path, 'r', encoding='utf-8') as file1:
+        doc1_content = file1.read().split()
+    with open(doc2_path, 'r', encoding='utf-8') as file2:
+        doc2_content = file2.read().split()
+    
+    # Menggabungkan semua kata unik dari kedua dokumen
+    all_words = set(doc1_content + doc2_content)
+    
+    # Membandingkan frekuensi setiap kata
+    differences = {}
+    for word in all_words:
+        count1 = doc1_content.count(word)
+        count2 = doc2_content.count(word)
+        if count1 != count2:  # Jika frekuensi berbeda, tambahkan ke hasil
+            differences[word] = {"file_baru": count1, "file_kedua": count2}
+    
+    return differences
+
+# Input nama file dari pengguna
+file1_path = input("Masukkan nama file pertama (contoh: file_baru.txt): ")
+file2_path = input("Masukkan nama file kedua (contoh: file_kedua.txt): ")
+
+# Memproses perbedaan kata
+try:
+    diff_count_result = count_differences(file1_path, file2_path)
+    
+    # Menampilkan hasil
+    print("\nHasil perbedaan kata:")
+    for word, counts in diff_count_result.items():
+        print(f"Kata '{word}': file_baru = {counts['file_baru']}, file_kedua = {counts['file_kedua']}")
+except FileNotFoundError as e:
+    print(f"File tidak ditemukan: {e}")
+except Exception as e:
+    print(f"Terjadi kesalahan: {e}")
